@@ -1,0 +1,648 @@
+@import 'orangecard/fonts.css';
+
+:root {
+    --side-bar-bg-color: #ffffff;
+    --control-text-color: #6b7280;
+    --font-sans-serif: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    --font-monospace: 'Fira Code', 'Courier New', monospace !important;
+    --primary-color: #f97316;
+    --secondary-color: #fff6f0;
+    --heading-color: #1f2937;
+    --text-color: #4b5563;
+    --border-color: #ffd7ba;
+    --code-bg-color: #fff8f5;
+    --blockquote-bg-color: #fff2ee;
+    --blockquote-border-color: #f97316;
+    --card-bg-color: #fff3ee;
+    --card-border-color: #ffd7ba;
+    --badge-bg-color: #fff8f5;
+    --badge-text-color: #f97316;
+    --quote-bg-color: #fff8f5;
+    --link-color: #f97316;
+    --code-color: #f97316;
+    --dot-color: #f97316;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-sans-serif);
+    color: var(--text-color);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6rem;
+    letter-spacing: 0;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+#write {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 30px 100px;
+    border-radius: 0.5rem;
+    background-color: var(--card-bg-color);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+#write p {
+    line-height: 1.6rem;
+    word-spacing: .05rem;
+}
+
+#write ol li {
+    padding-left: 0.5rem;
+}
+
+#write > ul:first-child,
+#write > ol:first-child {
+    margin-top: 30px;
+}
+
+body > *:first-child {
+    margin-top: 0 !important;
+}
+
+body > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+a {
+    color: var(--link-color);
+    font-weight: 600;
+    padding: 0 2px;
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+    color: var(--primary-color);
+}
+
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+
+h1 tt,
+h1 code {
+    font-size: inherit !important;
+}
+
+h2 tt,
+h2 code {
+    font-size: inherit !important;
+}
+
+h3 tt,
+h3 code {
+    font-size: inherit !important;
+}
+
+h4 tt,
+h4 code {
+    font-size: inherit !important;
+}
+
+h5 tt,
+h5 code {
+    font-size: inherit !important;
+}
+
+h6 tt,
+h6 code {
+    font-size: inherit !important;
+}
+
+h2 a,
+h3 a {
+    color: var(--primary-color);
+}
+
+h1 {
+    padding-bottom: .4rem;
+    font-size: 2.2rem;
+    line-height: 1.3;
+    color: var(--primary-color);
+    border-bottom: none;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 1.75rem;
+    line-height: 1.225;
+    margin: 35px 0 15px;
+    padding-bottom: 0.5em;
+    border-bottom: none;
+    color: var(--primary-color);
+}
+
+h3 {
+    font-size: 1.4rem;
+    line-height: 1.43;
+    margin: 20px 0 7px;
+    color: var(--primary-color);
+}
+
+h4 {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+h5 {
+    font-size: 1rem;
+    color: var(--primary-color);
+}
+
+h6 {
+    font-size: 1rem;
+    color: var(--primary-color);
+}
+
+p,
+blockquote,
+ul,
+ol,
+dl,
+table {
+    margin: 0.8em 0;
+}
+
+li > ol,
+li > ul {
+    margin: 0 0;
+}
+
+hr {
+    height: 1px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #ccc;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+    opacity: 0.5;
+}
+
+body > h2:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+body > h1:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+body > h3:first-child,
+body > h4:first-child,
+body > h5:first-child,
+body > h6:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+a:first-child h1,
+a:first-child h2,
+a:first-child h3,
+a:first-child h4,
+a:first-child h5,
+a:first-child h6 {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+h1 p,
+h2 p,
+h3 p,
+h4 p,
+h5 p,
+h6 p {
+    margin-top: 0;
+}
+
+li p.first {
+    display: inline-block;
+}
+
+ul,
+ol {
+    padding-left: 30px;
+}
+
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+
+blockquote {
+    background-color: var(--blockquote-bg-color);
+    border-left: 4px solid var(--blockquote-border-color);
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+    color: var(--text-color);
+}
+
+table {
+    padding: 0;
+    word-break: initial;
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+table tr {
+    border-top: 1px solid var(--border-color);
+    margin: 0;
+    padding: 0;
+}
+
+table tr:nth-child(2n),
+thead {
+    background-color: var(--secondary-color);
+}
+
+table tr th {
+    font-weight: bold;
+    border: 1px solid var(--border-color);
+    border-bottom: 0;
+    text-align: left;
+    margin: 0;
+    padding: 10px 16px;
+    background-color: var(--badge-bg-color);
+}
+
+table tr td {
+    border: 1px solid var(--border-color);
+    text-align: left;
+    margin: 0;
+    padding: 10px 16px;
+}
+
+table tr th:first-child,
+table tr td:first-child {
+    margin-top: 0;
+}
+
+table tr th:last-child,
+table tr td:last-child {
+    margin-bottom: 0;
+}
+
+#write strong {
+    padding: 0 1px;
+    color: inherit;
+}
+
+#write em {
+    padding: 0 5px 0 2px;
+    color: inherit;
+}
+
+#write table thead th {
+    background-color: var(--secondary-color);
+}
+
+#write .CodeMirror-gutters {
+    border-right: none;
+}
+
+#write .md-fences {
+    border: 1px solid var(--border-color);
+    -webkit-font-smoothing: initial;
+    margin: 0.8rem 0 !important;
+    padding: 0.3rem 0 !important;
+    line-height: 1.43rem;
+    background-color: var(--code-bg-color) !important;
+    border-radius: 0.25rem;
+    font-family: var(--font-monospace);
+    font-size: 0.85rem;
+    word-wrap: normal;
+}
+
+#write .CodeMirror-wrap .CodeMirror-code pre {
+    padding-left: 12px;
+}
+
+#write code, tt {
+    padding: 2px 4px;
+    border-radius: 0.25rem;
+    font-family: var(--font-monospace);
+    font-size: 0.92rem;
+    color: var(--code-color);
+    background-color: var(--code-bg-color);
+}
+
+tt {
+    margin: 0 2px;
+}
+
+#write .md-footnote {
+    background-color: var(--code-bg-color);
+    color: var(--code-color);
+}
+
+/* highlight */
+#write mark {
+    background-color: rgba(249, 115, 22, 0.15);
+    border-radius: 0.25rem;
+    padding: 2px 4px;
+    margin: 0 2px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+#write del {
+    padding: 1px 2px;
+}
+
+.cm-s-inner .cm-link,
+.cm-s-inner.cm-link {
+    color: var(--link-color);
+}
+
+.cm-s-inner .cm-string {
+    color: var(--code-color);
+}
+
+.md-task-list-item > input {
+    margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
+
+    pre {
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+    background-color: var(--code-bg-color);
+}
+
+.md-diagram-panel {
+    position: static !important;
+}
+
+#write pre.md-meta-block {
+    padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: var(--secondary-color);
+    border: 0;
+    border-radius: 0.25rem;
+    color: var(--text-color);
+    margin-top: 0 !important;
+}
+
+.mathjax-block > .code-tooltip {
+    bottom: .375rem;
+}
+
+#write > h3.md-focus:before {
+    left: -1.5625rem;
+    top: .375rem;
+}
+
+#write > h4.md-focus:before {
+    left: -1.5625rem;
+    top: .285714286rem;
+}
+
+#write > h5.md-focus:before {
+    left: -1.5625rem;
+    top: .285714286rem;
+}
+
+#write > h6.md-focus:before {
+    left: -1.5625rem;
+    top: .285714286rem;
+}
+
+.md-image > .md-meta {
+    border-radius: 3px;
+    font-family: var(--font-monospace);
+    padding: 2px 0 0 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: inherit;
+}
+
+.md-toc {
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid var(--border-color);
+    background-color: var(--secondary-color);
+    border-radius: 0.25rem;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 0.25rem;
+}
+
+#md-notification:before {
+    top: 10px;
+}
+
+/** focus mode */
+
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header,
+.context-menu,
+.megamenu-content,
+footer {
+    font-family: var(--font-sans-serif);
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state {
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: var(--side-bar-bg-color);
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+.html-for-mac .context-menu {
+    --item-hover-bg-color: #fff1e7;
+}
+
+/* 卡片内的内容颜色 */
+blockquote p, 
+blockquote ul, 
+blockquote ol, 
+blockquote li {
+    color: var(--text-color);
+}
+
+/* 自定义样式用于功能列表区域 */
+.feature-box {
+    border: none;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    margin: 0.8em 0;
+}
+
+/* 移除默认的H2后列表样式 */
+#write > h2:first-of-type + ul,
+#write > h2:first-of-type + p {
+    border: none;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    margin: 0.8em 0;
+}
+
+/* 特殊链接样式 */
+a[href="剪贴板"], 
+a[href$="PNG"], 
+a[href$="SVG"] {
+    color: var(--primary-color);
+    background-color: transparent;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+/* 水平分割线 */
+hr {
+    height: 1px;
+    background-color: #e5e5e5;
+    border: none;
+    margin: 1.5rem 0;
+}
+
+/* 图片样式 */
+.md-image img {
+    border-radius: 0.5rem;
+    max-width: 100%;
+    margin: 1rem 0;
+}
+
+/* 恢复feature-list类，用于手动使用 */
+.feature-list {
+    border: none;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    margin: 0.8em 0;
+}
+
+/* 调整卡片背景色，确保h1下的引用块有正确背景色 */
+#write > h1 + blockquote {
+    background-color: #fff2ee;
+    border-left: 4px solid var(--primary-color);
+    color: var(--text-color);
+}
+
+/* 列表样式 */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin: 0.8rem 0;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+ul li::before {
+    content: "•";
+    color: var(--primary-color) !important;
+    font-size: 1.5em;
+    position: absolute;
+    left: 0;
+    top: -0.2rem;
+}
+
+/* 修复"它的主要功能"标题下的功能列表 - 直接添加自定义样式，不使用边框 */
+h2:nth-of-type(1) + .typora-export-content,
+h2:nth-of-type(1) + div {
+    border: none;
+    background-color: transparent;
+}
+
+/* 为特定的标题"它的主要功能"设置样式 */
+h2:nth-of-type(1) {
+    color: var(--primary-color);
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+/* 自动处理h2下的列表 */
+/* 确保该选择器正常工作 */
+#write h2:nth-of-type(1) + ul {
+    border: none;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    margin: 0.8em 0;
+}
+
+/* 特殊类，可以直接添加在h2后面的div上 */
+.mdcard-feature-box {
+    border: none;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    margin: 0.8em 0;
+}

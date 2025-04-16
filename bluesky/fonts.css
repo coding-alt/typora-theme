@@ -1,0 +1,67 @@
+/* 导入Segoe UI字体 */
+@font-face {
+    font-family: 'Segoe UI';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Segoe UI');
+}
+
+@font-face {
+    font-family: 'Segoe UI';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Segoe UI Bold');
+}
+
+/* 导入Fira Code等宽字体 */
+@font-face {
+    font-family: 'Fira Code';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/woff2/FiraCode-Regular.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/woff/FiraCode-Regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Fira Code';
+    font-style: normal;
+    font-weight: 500;
+    src: url('https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/woff2/FiraCode-Medium.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/woff/FiraCode-Medium.woff') format('woff');
+}
+
+/* 备用字体 */
+@font-face {
+    font-family: 'Tahoma';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Tahoma');
+}
+
+@font-face {
+    font-family: 'Geneva';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Geneva');
+}
+
+@font-face {
+    font-family: 'Verdana';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Verdana');
+}
+
+@font-face {
+    font-family: 'Courier New';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Courier New');
+}
+
+@font-face {
+    font-family: 'Courier New';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Courier New Bold');
+} 
