@@ -1,0 +1,131 @@
+/* FluentMD Theme - Fluent Design 字体系统 */
+
+/* 导入 Segoe UI Variable 字体 - Fluent Design 官方字体 */
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+/* 导入 Cascadia Code 等宽字体 - Microsoft 开发的现代等宽字体 */
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+/* 导入 Segoe UI Historic 用于特殊标题 */
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;600;700;800;900&display=swap');
+
+/* 本地字体备用方案 - Windows 系统字体 */
+@font-face {
+    font-family: 'Segoe UI Variable';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Segoe UI Variable Light'), local('SegoeUIVariable-Light');
+}
+
+@font-face {
+    font-family: 'Segoe UI Variable';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Segoe UI Variable'), local('SegoeUIVariable-Regular');
+}
+
+@font-face {
+    font-family: 'Segoe UI Variable';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Segoe UI Variable Medium'), local('SegoeUIVariable-Medium');
+}
+
+@font-face {
+    font-family: 'Segoe UI Variable';
+    font-style: normal;
+    font-weight: 600;
+    src: local('Segoe UI Variable SemiBold'), local('SegoeUIVariable-SemiBold');
+}
+
+@font-face {
+    font-family: 'Segoe UI Variable';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Segoe UI Variable Bold'), local('SegoeUIVariable-Bold');
+}
+
+@font-face {
+    font-family: 'Segoe UI';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Segoe UI Light'), local('SegoeUI-Light');
+}
+
+@font-face {
+    font-family: 'Segoe UI';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Segoe UI'), local('SegoeUI-Regular');
+}
+
+@font-face {
+    font-family: 'Segoe UI';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Segoe UI Medium'), local('SegoeUI-Medium');
+}
+
+@font-face {
+    font-family: 'Segoe UI';
+    font-style: normal;
+    font-weight: 600;
+    src: local('Segoe UI Semibold'), local('SegoeUI-Semibold');
+}
+
+@font-face {
+    font-family: 'Segoe UI';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Segoe UI Bold'), local('SegoeUI-Bold');
+}
+
+@font-face {
+    font-family: 'Cascadia Code';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Cascadia Code'), local('CascadiaCode-Regular');
+}
+
+@font-face {
+    font-family: 'Cascadia Code';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Cascadia Code Medium'), local('CascadiaCode-Medium');
+}
+
+@font-face {
+    font-family: 'Cascadia Code';
+    font-style: normal;
+    font-weight: 600;
+    src: local('Cascadia Code SemiBold'), local('CascadiaCode-SemiBold');
+}
+
+@font-face {
+    font-family: 'Cascadia Code';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Cascadia Code Bold'), local('CascadiaCode-Bold');
+}
+
+/* 系统字体备用 */
+@font-face {
+    font-family: 'SF Pro Display';
+    font-style: normal;
+    font-weight: 400;
+    src: local('SF Pro Display'), local('SFProDisplay-Regular');
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Helvetica Neue');
+}
+
+@font-face {
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Arial');
+}
