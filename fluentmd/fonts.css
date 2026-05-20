@@ -1,15 +1,9 @@
 /* FluentMD Theme - Fluent Design 字体系统 */
 
-/* 导入 Segoe UI Variable 字体 - Fluent Design 官方字体 */
-@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
-
 /* 导入 Cascadia Code 等宽字体 - Microsoft 开发的现代等宽字体 */
 @import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
-/* 导入 Segoe UI Historic 用于特殊标题 */
-@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;600;700;800;900&display=swap');
-
-/* 本地字体备用方案 - Windows 系统字体 */
+/* 本地字体方案 - Windows 系统字体 */
 @font-face {
     font-family: 'Segoe UI Variable';
     font-style: normal;

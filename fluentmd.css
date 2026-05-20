@@ -108,6 +108,7 @@
     /* 兼容性变量 */
     --side-bar-bg-color: var(--fluent-surface);
     --control-text-color: var(--fluent-text-secondary);
+    --bg-color: var(--fluent-grey-10);
     --primary-color: var(--fluent-primary);
     --secondary-color: var(--fluent-surface-secondary);
     --heading-color: var(--fluent-text-primary);
@@ -116,6 +117,18 @@
     --code-bg-color: var(--fluent-surface-tertiary);
     --blockquote-bg-color: var(--fluent-info-background);
     --blockquote-border-color: var(--fluent-info);
+    --active-file-bg-color: rgba(0, 120, 212, 0.15);
+    --active-file-text-color: var(--fluent-primary);
+    --item-hover-bg-color: rgba(0, 120, 212, 0.1);
+    --item-hover-text-color: var(--fluent-text-primary);
+    --window-border: rgba(255, 255, 255, 0.2);
+    --select-text-bg-color: rgba(0, 120, 212, 0.3);
+    --select-text-font-color: var(--fluent-text-primary);
+    --md-char-color: var(--fluent-text-tertiary);
+    --meta-content-color: var(--fluent-text-secondary);
+    --blur-text-color: var(--fluent-text-tertiary);
+    --rawblock-edit-panel-bd: var(--fluent-surface-secondary);
+    --monospace: var(--fluent-font-mono);
 }
 
 /* 全局样式 */
@@ -143,6 +156,7 @@ body {
     max-width: 860px;
     margin: var(--fluent-space-xxl) auto;
     padding: var(--fluent-space-xxxl);
+    box-sizing: border-box;
     background: var(--fluent-card);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -154,10 +168,15 @@ body {
     transition: all var(--fluent-duration-slow) var(--fluent-easing-standard);
 }
 
+#write *,
+#write *::before,
+#write *::after {
+    box-sizing: border-box;
+}
+
 #write:hover {
     background: var(--fluent-card-hover);
     box-shadow: var(--fluent-shadow-64);
-    transform: translateY(-2px);
 }
 
 /* 段落样式 */
@@ -171,7 +190,7 @@ body {
 }
 
 /* 链接样式 */
-a {
+#write a {
     color: var(--fluent-primary);
     text-decoration: none;
     font-weight: 500;
@@ -182,42 +201,40 @@ a {
     margin: -2px -4px;
 }
 
-a:hover {
+#write a:hover {
     color: var(--fluent-primary-hover);
     background: rgba(0, 120, 212, 0.1);
-    transform: translateY(-1px);
 }
 
-a:active {
+#write a:active {
     color: var(--fluent-primary-pressed);
-    transform: translateY(0);
 }
 
-a:focus {
+#write a:focus {
     outline: 2px solid var(--fluent-primary);
     outline-offset: 2px;
 }
 
 /* 强调文本 */
-strong {
+#write strong {
     font-weight: 600;
     color: var(--fluent-text-primary);
 }
 
-em {
+#write em {
     font-style: italic;
     color: var(--fluent-text-secondary);
 }
 
 /* 删除线 */
-del {
+#write del {
     text-decoration: line-through;
     color: var(--fluent-text-tertiary);
     opacity: 0.8;
 }
 
 /* 高亮文本 */
-mark {
+#write mark {
     background: linear-gradient(135deg, rgba(255, 193, 7, 0.3) 0%, rgba(255, 152, 0, 0.3) 100%);
     color: var(--fluent-text-primary);
     padding: 2px 6px;
@@ -227,7 +244,7 @@ mark {
 }
 
 /* 行内代码 */
-code {
+#write code {
     font-family: var(--fluent-font-mono);
     background: var(--fluent-surface-tertiary);
     color: var(--fluent-primary);
@@ -240,23 +257,22 @@ code {
     transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
-code:hover {
+#write code:hover {
     background: rgba(0, 120, 212, 0.1);
-    transform: translateY(-1px);
     box-shadow: var(--fluent-shadow-2);
 }
 
 /* 基础样式重置 */
-body > *:first-child {
+#write > *:first-child {
     margin-top: 0 !important;
 }
 
-body > *:last-child {
+#write > *:last-child {
     margin-bottom: 0 !important;
 }
 
 /* ===== Fluent Design 标题系统 ===== */
-h1, h2, h3, h4, h5, h6 {
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6 {
     font-family: var(--fluent-font-display);
     color: var(--fluent-text-primary);
     margin: 2em 0 1em 0;
@@ -267,7 +283,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Display - H1 */
-h1 {
+#write h1 {
     font-size: 3rem;
     font-weight: 700;
     line-height: 1.2;
@@ -279,20 +295,12 @@ h1 {
     position: relative;
 }
 
-h1::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-secondary) 100%);
-    border-radius: var(--fluent-corner-radius-small);
-    box-shadow: var(--fluent-shadow-4);
+#write h1::after {
+    content: none;
 }
 
 /* Title Large - H2 */
-h2 {
+#write h2 {
     font-size: 2.25rem;
     font-weight: 600;
     margin: 2em 0 1em 0;
@@ -302,7 +310,7 @@ h2 {
     position: relative;
 }
 
-h2::before {
+#write h2::before {
     content: '';
     position: absolute;
     bottom: -2px;
@@ -314,7 +322,7 @@ h2::before {
 }
 
 /* Title Medium - H3 */
-h3 {
+#write h3 {
     font-size: 1.75rem;
     font-weight: 600;
     color: var(--fluent-primary);
@@ -322,35 +330,34 @@ h3 {
     padding-left: var(--fluent-space-lg);
 }
 
-h3::before {
+#write h3::before {
     content: '';
     position: absolute;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0.15em;
     width: 4px;
-    height: 24px;
+    height: 1em;
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-secondary) 100%);
     border-radius: var(--fluent-corner-radius-small);
     box-shadow: var(--fluent-shadow-2);
 }
 
 /* Title Small - H4 */
-h4 {
+#write h4 {
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--fluent-text-primary);
 }
 
 /* Subtitle - H5 */
-h5 {
+#write h5 {
     font-size: 1.25rem;
     font-weight: 500;
     color: var(--fluent-text-secondary);
 }
 
 /* Caption - H6 */
-h6 {
+#write h6 {
     font-size: 1rem;
     font-weight: 600;
     color: var(--fluent-text-secondary);
@@ -359,12 +366,12 @@ h6 {
 }
 
 /* 标题悬停效果 */
-h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
-    transform: translateX(4px);
+#write h1:hover, #write h2:hover, #write h3:hover, #write h4:hover, #write h5:hover, #write h6:hover {
+    color: var(--fluent-primary);
 }
 
 /* 标题链接 */
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+#write h1 a, #write h2 a, #write h3 a, #write h4 a, #write h5 a, #write h6 a {
     color: inherit;
     text-decoration: none;
     background: none;
@@ -373,28 +380,28 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 }
 
 /* ===== Fluent Design 列表系统 ===== */
-ul, ol {
+#write ul, #write ol {
     padding-left: var(--fluent-space-xxl);
     margin: 1.5em 0;
 }
 
-ul li, ol li {
+#write ul li, #write ol li {
     margin: var(--fluent-space-sm) 0;
     line-height: 1.7;
     position: relative;
     transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
-ul li:hover, ol li:hover {
-    transform: translateX(2px);
+#write ul li:hover, #write ol li:hover {
+    color: var(--fluent-primary);
 }
 
 /* 无序列表样式 */
-ul {
+#write ul {
     list-style: none;
 }
 
-ul li::before {
+#write ul li::before {
     content: '';
     position: absolute;
     left: -20px;
@@ -407,35 +414,35 @@ ul li::before {
     transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
-ul li:hover::before {
+#write ul li:hover::before {
     background: var(--fluent-primary-hover);
     transform: scale(1.2);
     box-shadow: var(--fluent-shadow-4);
 }
 
-ul ul li::before {
+#write ul ul li::before {
     background: var(--fluent-secondary);
     width: 4px;
     height: 4px;
 }
 
-ul ul ul li::before {
+#write ul ul ul li::before {
     background: var(--fluent-grey-90);
     width: 3px;
     height: 3px;
 }
 
 /* 有序列表样式 */
-ol {
+#write ol {
     counter-reset: item;
     list-style: none;
 }
 
-ol li {
+#write ol li {
     counter-increment: item;
 }
 
-ol li::before {
+#write ol li::before {
     content: counter(item);
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-primary-light) 100%);
     color: var(--fluent-text-white);
@@ -454,19 +461,23 @@ ol li::before {
     transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
-ol li:hover::before {
+#write ol li:hover::before {
     background: linear-gradient(135deg, var(--fluent-primary-hover) 0%, var(--fluent-primary) 100%);
     transform: scale(1.1);
     box-shadow: var(--fluent-shadow-8);
 }
 
 /* 任务列表 - Fluent Design Checkbox */
-.md-task-list-item {
+#write .md-task-list-item {
     list-style: none;
     position: relative;
 }
 
-.md-task-list-item > input {
+#write .md-task-list-item::before {
+    display: none;
+}
+
+#write .md-task-list-item > input {
     appearance: none;
     width: 18px;
     height: 18px;
@@ -481,13 +492,13 @@ ol li:hover::before {
     backdrop-filter: blur(10px);
 }
 
-.md-task-list-item > input:checked {
+#write .md-task-list-item > input:checked {
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-primary-light) 100%);
     border-color: var(--fluent-primary);
     box-shadow: var(--fluent-shadow-4);
 }
 
-.md-task-list-item > input:checked::after {
+#write .md-task-list-item > input:checked::after {
     content: '✓';
     position: absolute;
     top: 50%;
@@ -498,13 +509,13 @@ ol li:hover::before {
     font-weight: bold;
 }
 
-.md-task-list-item > input:hover {
+#write .md-task-list-item > input:hover {
     box-shadow: 0 0 0 8px rgba(0, 120, 212, 0.1);
     transform: scale(1.05);
 }
 
 /* ===== Fluent Design 代码块系统 ===== */
-pre {
+#write pre {
     background: var(--fluent-surface-secondary);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -519,13 +530,17 @@ pre {
     transition: all var(--fluent-duration-normal) var(--fluent-easing-standard);
 }
 
-pre:hover {
-    background: var(--fluent-surface);
-    box-shadow: var(--fluent-shadow-16);
-    transform: translateY(-2px);
+#write pre,
+#write .md-fences {
+    max-width: 100%;
 }
 
-pre::before {
+#write pre:hover {
+    background: var(--fluent-surface);
+    box-shadow: var(--fluent-shadow-16);
+}
+
+#write pre::before {
     content: '';
     position: absolute;
     top: 0;
@@ -536,7 +551,7 @@ pre::before {
     border-radius: var(--fluent-corner-radius-large) var(--fluent-corner-radius-large) 0 0;
 }
 
-pre code {
+#write pre code {
     background: transparent;
     border: none;
     padding: 0;
@@ -545,8 +560,14 @@ pre code {
     color: var(--fluent-text-primary);
 }
 
+#write pre code:hover {
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+}
+
 /* 代码块语言标签 */
-.md-fences {
+#write .md-fences {
     background: var(--fluent-surface-secondary) !important;
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
@@ -559,13 +580,12 @@ pre code {
     transition: all var(--fluent-duration-normal) var(--fluent-easing-standard) !important;
 }
 
-.md-fences:hover {
+#write .md-fences:hover {
     background: var(--fluent-surface) !important;
     box-shadow: var(--fluent-shadow-16) !important;
-    transform: translateY(-2px) !important;
 }
 
-.md-fences::before {
+#write .md-fences::before {
     content: '';
     position: absolute;
     top: 0;
@@ -576,25 +596,56 @@ pre code {
     border-radius: var(--fluent-corner-radius-large) var(--fluent-corner-radius-large) 0 0;
 }
 
-.md-fences .CodeMirror {
+#write .md-fences .CodeMirror {
     background: transparent !important;
     color: var(--fluent-text-primary) !important;
     font-family: var(--fluent-font-mono) !important;
 }
 
-.md-fences .CodeMirror-gutters {
+#write .md-fences .CodeMirror-gutters {
     background: rgba(255, 255, 255, 0.1) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
     border-radius: var(--fluent-corner-radius-medium) 0 0 var(--fluent-corner-radius-medium);
     backdrop-filter: blur(10px);
 }
 
-.md-fences .CodeMirror-linenumber {
+#write .md-fences .CodeMirror-linenumber {
     color: var(--fluent-text-tertiary) !important;
     font-size: 0.8rem;
 }
 
-.md-lang {
+.CodeMirror,
+.CodeMirror-scroll {
+    background: transparent;
+    color: var(--fluent-text-primary);
+    font-family: var(--fluent-font-mono);
+}
+
+.CodeMirror-gutters {
+    background: var(--fluent-surface-secondary);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.CodeMirror-linenumber {
+    color: var(--fluent-text-tertiary);
+}
+
+.cm-s-typora-default .cm-header,
+.cm-s-inner .cm-header {
+    color: var(--fluent-primary);
+}
+
+.cm-s-typora-default .cm-link,
+.cm-s-inner .cm-link {
+    color: var(--fluent-primary);
+}
+
+.cm-s-typora-default .cm-comment,
+.cm-s-inner .cm-comment {
+    color: var(--fluent-text-tertiary);
+}
+
+#write .md-lang {
     position: absolute;
     top: var(--fluent-space-sm);
     right: var(--fluent-space-lg);
@@ -611,7 +662,7 @@ pre code {
 }
 
 /* ===== Fluent Design 引用块 ===== */
-blockquote {
+#write blockquote {
     background: var(--fluent-info-background);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -624,13 +675,12 @@ blockquote {
     transition: all var(--fluent-duration-normal) var(--fluent-easing-standard);
 }
 
-blockquote:hover {
+#write blockquote:hover {
     background: rgba(0, 120, 212, 0.15);
     box-shadow: var(--fluent-shadow-16);
-    transform: translateX(4px);
 }
 
-blockquote::before {
+#write blockquote::before {
     content: '"';
     font-size: 3rem;
     color: var(--fluent-info);
@@ -642,7 +692,7 @@ blockquote::before {
     line-height: 1;
 }
 
-blockquote p {
+#write blockquote p {
     color: var(--fluent-text-primary);
     margin: var(--fluent-space-sm) 0;
     font-style: italic;
@@ -650,23 +700,23 @@ blockquote p {
     z-index: 1;
 }
 
-blockquote p:first-child {
+#write blockquote p:first-child {
     margin-top: 0;
 }
 
-blockquote p:last-child {
+#write blockquote p:last-child {
     margin-bottom: 0;
 }
 
 /* 嵌套引用 */
-blockquote blockquote {
+#write blockquote blockquote {
     border-left-color: var(--fluent-secondary);
     background: rgba(135, 100, 184, 0.1);
     margin: var(--fluent-space-lg) 0;
 }
 
 /* ===== Fluent Design 表格系统 ===== */
-table {
+#write table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
@@ -681,16 +731,24 @@ table {
     transition: all var(--fluent-duration-normal) var(--fluent-easing-standard);
 }
 
-table:hover {
-    box-shadow: var(--fluent-shadow-16);
-    transform: translateY(-2px);
+#write .md-table-fig {
+    max-width: 100%;
+    overflow-x: auto;
 }
 
-table thead {
+#write .md-table-fig table {
+    min-width: 100%;
+}
+
+#write table:hover {
+    box-shadow: var(--fluent-shadow-16);
+}
+
+#write table thead {
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-primary-light) 100%);
 }
 
-table thead th {
+#write table thead th {
     color: var(--fluent-text-white);
     font-weight: 600;
     padding: var(--fluent-space-lg) var(--fluent-space-xl);
@@ -702,7 +760,7 @@ table thead th {
     position: relative;
 }
 
-table thead th::after {
+#write table thead th::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -712,21 +770,20 @@ table thead th::after {
     background: rgba(255, 255, 255, 0.3);
 }
 
-table tbody tr {
+#write table tbody tr {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
-table tbody tr:hover {
+#write table tbody tr:hover {
     background: rgba(0, 120, 212, 0.05);
-    transform: translateX(2px);
 }
 
-table tbody tr:last-child {
+#write table tbody tr:last-child {
     border-bottom: none;
 }
 
-table tbody td {
+#write table tbody td {
     padding: var(--fluent-space-lg) var(--fluent-space-xl);
     color: var(--fluent-text-primary);
     border: none;
@@ -735,16 +792,16 @@ table tbody td {
     transition: color var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
-table tbody tr:nth-child(even) {
+#write table tbody tr:nth-child(even) {
     background: rgba(255, 255, 255, 0.05);
 }
 
-table tbody tr:nth-child(even):hover {
+#write table tbody tr:nth-child(even):hover {
     background: rgba(0, 120, 212, 0.08);
 }
 
 /* ===== Fluent Design 分割线 ===== */
-hr {
+#write hr {
     border: none;
     height: 2px;
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-secondary) 100%);
@@ -755,12 +812,11 @@ hr {
     transition: all var(--fluent-duration-normal) var(--fluent-easing-standard);
 }
 
-hr:hover {
-    transform: scaleY(1.5);
+#write hr:hover {
     box-shadow: var(--fluent-shadow-8);
 }
 
-hr::after {
+#write hr::after {
     content: '◆';
     position: absolute;
     top: 50%;
@@ -775,23 +831,31 @@ hr::after {
 }
 
 /* ===== Fluent Design 图片样式 ===== */
-img {
+#write img {
     max-width: 100%;
     height: auto;
+    vertical-align: middle;
+}
+
+#write .md-image img,
+#write p > img:only-child,
+#write p > a:only-child img {
     border-radius: var(--fluent-corner-radius-large);
     box-shadow: var(--fluent-shadow-8);
-    margin: var(--fluent-space-xxl) 0;
+    margin: var(--fluent-space-sm) 0;
+    display: block;
     transition: all var(--fluent-duration-slow) var(--fluent-easing-standard);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-img:hover {
-    transform: scale(1.02) translateY(-4px);
+#write .md-image img:hover,
+#write p > img:only-child:hover,
+#write p > a:only-child img:hover {
     box-shadow: var(--fluent-shadow-64);
 }
 
 /* ===== Fluent Design 键盘按键 ===== */
-kbd {
+#write kbd {
     background: var(--fluent-surface-secondary);
     backdrop-filter: blur(10px) saturate(180%);
     -webkit-backdrop-filter: blur(10px) saturate(180%);
@@ -808,13 +872,12 @@ kbd {
     transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
-kbd:hover {
-    transform: translateY(-1px);
+#write kbd:hover {
     box-shadow: var(--fluent-shadow-8);
 }
 
 /* ===== Fluent Design 脚注 ===== */
-.footnotes {
+#write .footnotes {
     border-top: 2px solid var(--fluent-primary);
     margin-top: var(--fluent-space-xxxl);
     padding-top: var(--fluent-space-xxl);
@@ -827,16 +890,16 @@ kbd:hover {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.footnotes ol {
+#write .footnotes ol {
     color: var(--fluent-text-secondary);
     font-size: 0.9rem;
 }
 
-.footnotes li {
+#write .footnotes li {
     margin: var(--fluent-space-lg) 0;
 }
 
-.footnote-ref {
+#write .footnote-ref {
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-secondary) 100%);
     color: var(--fluent-text-white);
     padding: 2px 6px;
@@ -849,14 +912,13 @@ kbd:hover {
     backdrop-filter: blur(10px);
 }
 
-.footnote-ref:hover {
+#write .footnote-ref:hover {
     background: linear-gradient(135deg, var(--fluent-primary-hover) 0%, var(--fluent-secondary-light) 100%);
-    transform: translateY(-1px) scale(1.05);
     box-shadow: var(--fluent-shadow-8);
 }
 
 /* ===== Fluent Design 目录 ===== */
-.md-toc {
+#write .md-toc {
     background: var(--fluent-surface);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -868,54 +930,53 @@ kbd:hover {
     transition: all var(--fluent-duration-normal) var(--fluent-easing-standard);
 }
 
-.md-toc:hover {
+#write .md-toc:hover {
     box-shadow: var(--fluent-shadow-16);
-    transform: translateY(-2px);
 }
 
-.md-toc-content {
+#write .md-toc-content {
     background: transparent;
 }
 
-.md-toc-h1 {
+#write .md-toc-h1 {
     font-weight: 700;
     color: var(--fluent-primary);
     font-size: 1.1rem;
 }
 
-.md-toc-h2 {
+#write .md-toc-h2 {
     font-weight: 600;
     color: var(--fluent-text-primary);
     margin-left: var(--fluent-space-lg);
     font-size: 1rem;
 }
 
-.md-toc-h3 {
+#write .md-toc-h3 {
     color: var(--fluent-text-secondary);
     margin-left: var(--fluent-space-xl);
     font-size: 0.9rem;
 }
 
-.md-toc-h4 {
+#write .md-toc-h4 {
     color: var(--fluent-text-secondary);
     margin-left: var(--fluent-space-xxl);
     font-size: 0.85rem;
 }
 
-.md-toc-h5 {
+#write .md-toc-h5 {
     color: var(--fluent-text-tertiary);
     margin-left: 40px;
     font-size: 0.8rem;
 }
 
-.md-toc-h6 {
+#write .md-toc-h6 {
     color: var(--fluent-text-tertiary);
     margin-left: 48px;
     font-size: 0.75rem;
 }
 
 /* ===== Fluent Design 卡片组件 ===== */
-.fluent-card {
+#write .fluent-card {
     background: var(--fluent-surface);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -929,13 +990,13 @@ kbd:hover {
     overflow: hidden;
 }
 
-.fluent-card:hover {
+#write .fluent-card:hover {
     box-shadow: var(--fluent-shadow-16);
     transform: translateY(-4px);
     background: var(--fluent-card-hover);
 }
 
-.fluent-card::before {
+#write .fluent-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -945,21 +1006,21 @@ kbd:hover {
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-secondary) 100%);
 }
 
-.fluent-card-elevated {
+#write .fluent-card-elevated {
     box-shadow: var(--fluent-shadow-16);
 }
 
-.fluent-card-filled {
+#write .fluent-card-filled {
     background: var(--fluent-surface-secondary);
 }
 
-.fluent-card-outlined {
+#write .fluent-card-outlined {
     border: 2px solid var(--fluent-primary);
     box-shadow: var(--fluent-shadow-4);
 }
 
 /* ===== Fluent Design 按钮系统 ===== */
-.fluent-button {
+#write .fluent-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -981,52 +1042,52 @@ kbd:hover {
 }
 
 /* Primary Button */
-.fluent-button-primary {
+#write .fluent-button-primary {
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-primary-light) 100%);
     color: var(--fluent-text-white);
     box-shadow: var(--fluent-shadow-4);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.fluent-button-primary:hover {
+#write .fluent-button-primary:hover {
     background: linear-gradient(135deg, var(--fluent-primary-hover) 0%, var(--fluent-primary) 100%);
     box-shadow: var(--fluent-shadow-8);
     transform: translateY(-2px) scale(1.02);
 }
 
-.fluent-button-primary:active {
+#write .fluent-button-primary:active {
     background: linear-gradient(135deg, var(--fluent-primary-pressed) 0%, var(--fluent-primary-dark) 100%);
     transform: translateY(0) scale(1);
 }
 
 /* Secondary Button */
-.fluent-button-secondary {
+#write .fluent-button-secondary {
     background: var(--fluent-surface);
     color: var(--fluent-primary);
     border: 2px solid var(--fluent-primary);
     box-shadow: var(--fluent-shadow-2);
 }
 
-.fluent-button-secondary:hover {
+#write .fluent-button-secondary:hover {
     background: rgba(0, 120, 212, 0.1);
     box-shadow: var(--fluent-shadow-4);
     transform: translateY(-1px);
 }
 
 /* Text Button */
-.fluent-button-text {
+#write .fluent-button-text {
     background: transparent;
     color: var(--fluent-primary);
     padding: var(--fluent-space-sm) var(--fluent-space-md);
 }
 
-.fluent-button-text:hover {
+#write .fluent-button-text:hover {
     background: rgba(0, 120, 212, 0.1);
     border-radius: var(--fluent-corner-radius-medium);
 }
 
 /* ===== Fluent Design 徽章系统 ===== */
-.fluent-badge {
+#write .fluent-badge {
     display: inline-block;
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-primary-light) 100%);
     color: var(--fluent-text-white);
@@ -1044,29 +1105,29 @@ kbd:hover {
     transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
-.fluent-badge:hover {
+#write .fluent-badge:hover {
     transform: translateY(-1px) scale(1.05);
     box-shadow: var(--fluent-shadow-8);
 }
 
-.fluent-badge-secondary {
+#write .fluent-badge-secondary {
     background: linear-gradient(135deg, var(--fluent-secondary) 0%, var(--fluent-secondary-light) 100%);
 }
 
-.fluent-badge-success {
+#write .fluent-badge-success {
     background: linear-gradient(135deg, var(--fluent-success) 0%, #16a085 100%);
 }
 
-.fluent-badge-warning {
+#write .fluent-badge-warning {
     background: linear-gradient(135deg, var(--fluent-warning) 0%, #f39c12 100%);
 }
 
-.fluent-badge-error {
+#write .fluent-badge-error {
     background: linear-gradient(135deg, var(--fluent-error) 0%, #e74c3c 100%);
 }
 
 /* ===== Fluent Design 提示框系统 ===== */
-.fluent-alert {
+#write .fluent-alert {
     padding: var(--fluent-space-lg) var(--fluent-space-xl);
     border-radius: var(--fluent-corner-radius-large);
     margin: var(--fluent-space-xxl) 0;
@@ -1079,36 +1140,36 @@ kbd:hover {
     transition: all var(--fluent-duration-normal) var(--fluent-easing-standard);
 }
 
-.fluent-alert:hover {
+#write .fluent-alert:hover {
     transform: translateX(4px);
     box-shadow: var(--fluent-shadow-16);
 }
 
-.fluent-alert-info {
+#write .fluent-alert-info {
     background: var(--fluent-info-background);
     border-left-color: var(--fluent-info);
     color: var(--fluent-text-primary);
 }
 
-.fluent-alert-success {
+#write .fluent-alert-success {
     background: var(--fluent-success-background);
     border-left-color: var(--fluent-success);
     color: var(--fluent-text-primary);
 }
 
-.fluent-alert-warning {
+#write .fluent-alert-warning {
     background: var(--fluent-warning-background);
     border-left-color: var(--fluent-warning);
     color: var(--fluent-text-primary);
 }
 
-.fluent-alert-error {
+#write .fluent-alert-error {
     background: var(--fluent-error-background);
     border-left-color: var(--fluent-error);
     color: var(--fluent-text-primary);
 }
 
-.fluent-alert::before {
+#write .fluent-alert::before {
     content: '';
     position: absolute;
     top: var(--fluent-space-lg);
@@ -1121,7 +1182,7 @@ kbd:hover {
 }
 
 /* ===== Fluent Design Chip 组件 ===== */
-.fluent-chip {
+#write .fluent-chip {
     display: inline-flex;
     align-items: center;
     padding: var(--fluent-space-sm) var(--fluent-space-md);
@@ -1138,13 +1199,13 @@ kbd:hover {
     box-shadow: var(--fluent-shadow-2);
 }
 
-.fluent-chip:hover {
+#write .fluent-chip:hover {
     background: var(--fluent-surface-secondary);
     box-shadow: var(--fluent-shadow-4);
     transform: translateY(-1px);
 }
 
-.fluent-chip-selected {
+#write .fluent-chip-selected {
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-primary-light) 100%);
     color: var(--fluent-text-white);
     border-color: var(--fluent-primary);
@@ -1292,7 +1353,7 @@ kbd:hover {
     box-shadow: var(--fluent-shadow-64);
 }
 
-.on-focus-mode blockquote {
+.on-focus-mode #write blockquote {
     opacity: 0.9;
 }
 
@@ -1338,33 +1399,33 @@ kbd:hover {
         border-radius: var(--fluent-corner-radius-medium);
     }
 
-    h1 {
+    #write h1 {
         font-size: 2.5rem;
     }
 
-    h2 {
+    #write h2 {
         font-size: 2rem;
     }
 
-    h3 {
+    #write h3 {
         font-size: 1.5rem;
     }
 
-    table {
+    #write table {
         font-size: 0.875rem;
     }
 
-    pre {
+    #write pre {
         padding: var(--fluent-space-lg);
         font-size: 0.8rem;
     }
 
-    .fluent-button {
+    #write .fluent-button {
         padding: var(--fluent-space-sm) var(--fluent-space-md);
         font-size: 0.8rem;
     }
 
-    .fluent-card {
+    #write .fluent-card {
         padding: var(--fluent-space-lg);
         margin: var(--fluent-space-lg) 0;
     }
@@ -1376,15 +1437,15 @@ kbd:hover {
         padding: var(--fluent-space-lg);
     }
 
-    h1 {
+    #write h1 {
         font-size: 2rem;
     }
 
-    h2 {
+    #write h2 {
         font-size: 1.5rem;
     }
 
-    ul, ol {
+    #write ul, #write ol {
         padding-left: var(--fluent-space-lg);
     }
 }
@@ -1411,35 +1472,35 @@ kbd:hover {
         -webkit-backdrop-filter: none;
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    #write h1, #write h2, #write h3, #write h4, #write h5, #write h6 {
         color: black;
         background: none;
         -webkit-text-fill-color: black;
     }
 
-    h1::after, h2::before, h3::before {
+    #write h1::after, #write h2::before, #write h3::before {
         display: none;
     }
 
-    table, pre {
+    #write table, #write pre {
         page-break-inside: avoid;
     }
 
-    pre {
+    #write pre {
         background: #f5f5f5;
         border: 1px solid #ddd;
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
     }
 
-    blockquote {
+    #write blockquote {
         background: #f9f9f9;
         border-left: 4px solid #ccc;
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
     }
 
-    .fluent-card, .fluent-alert {
+    #write .fluent-card, #write .fluent-alert {
         background: #f9f9f9;
         border: 1px solid #ddd;
         backdrop-filter: none;
@@ -1481,14 +1542,14 @@ kbd:hover {
     }
 }
 
-.fluent-fade-in {
+#write .fluent-fade-in {
     animation: fluent-fade-in var(--fluent-duration-slow) var(--fluent-easing-decelerate);
 }
 
-.fluent-scale-in {
+#write .fluent-scale-in {
     animation: fluent-scale-in var(--fluent-duration-normal) var(--fluent-easing-standard);
 }
 
-.fluent-slide-in {
+#write .fluent-slide-in {
     animation: fluent-slide-in var(--fluent-duration-fast) var(--fluent-easing-decelerate);
 }
