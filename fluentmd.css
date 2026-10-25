@@ -11,6 +11,9 @@
     --fluent-primary-dark: #005a9e;
     --fluent-primary-hover: #106ebe;
     --fluent-primary-pressed: #005a9e;
+    /* 正文/链接专用深蓝：--fluent-primary 在半透明白卡片(≈#e0e1ff)上只有 3.5:1，
+       小字号不达标，因此文字色单独用更深的 --fluent-primary-text。 */
+    --fluent-primary-text: #005a9e;
     
     /* Secondary Colors */
     --fluent-secondary: #8764b8;
@@ -191,7 +194,7 @@ body {
 
 /* 链接样式 */
 #write a {
-    color: var(--fluent-primary);
+    color: var(--fluent-primary-text);
     text-decoration: none;
     font-weight: 500;
     position: relative;
@@ -202,7 +205,7 @@ body {
 }
 
 #write a:hover {
-    color: var(--fluent-primary-hover);
+    color: var(--fluent-primary-text);
     background: rgba(0, 120, 212, 0.1);
 }
 
@@ -226,11 +229,11 @@ body {
     color: var(--fluent-text-secondary);
 }
 
-/* 删除线 */
+/* 删除线：--fluent-grey-90 只有 3.5:1，改用上限更深的中性灰 */
 #write del {
     text-decoration: line-through;
-    color: var(--fluent-text-tertiary);
-    opacity: 0.8;
+    color: var(--fluent-grey-130);
+    opacity: 1;
 }
 
 /* 高亮文本 */
@@ -247,7 +250,7 @@ body {
 #write code {
     font-family: var(--fluent-font-mono);
     background: var(--fluent-surface-tertiary);
-    color: var(--fluent-primary);
+    color: var(--fluent-primary-text);
     padding: 3px 8px;
     border-radius: var(--fluent-corner-radius-medium);
     border: 1px solid rgba(0, 120, 212, 0.2);
@@ -299,6 +302,25 @@ body {
     content: none;
 }
 
+/* -webkit-text-fill-color 会被子元素继承。H1 用透明填充做渐变文字后，
+   标题内的行内代码/按钮/链接也会变成透明而"消失"，必须显式恢复填充色。 */
+#write h1 code, #write h2 code {
+    -webkit-text-fill-color: var(--fluent-primary-text);
+    color: var(--fluent-primary-text);
+}
+
+#write h1 kbd, #write h2 kbd,
+#write h1 mark, #write h2 mark {
+    -webkit-text-fill-color: var(--fluent-text-primary);
+}
+
+#write h1 strong, #write h2 strong,
+#write h1 em, #write h2 em,
+#write h1 del, #write h2 del,
+#write h1 a, #write h2 a {
+    -webkit-text-fill-color: currentColor;
+}
+
 /* Title Large - H2 */
 #write h2 {
     font-size: 2.25rem;
@@ -325,7 +347,7 @@ body {
 #write h3 {
     font-size: 1.75rem;
     font-weight: 600;
-    color: var(--fluent-primary);
+    color: var(--fluent-primary-text);
     position: relative;
     padding-left: var(--fluent-space-lg);
 }
@@ -367,7 +389,7 @@ body {
 
 /* 标题悬停效果 */
 #write h1:hover, #write h2:hover, #write h3:hover, #write h4:hover, #write h5:hover, #write h6:hover {
-    color: var(--fluent-primary);
+    color: var(--fluent-primary-text);
 }
 
 /* 标题链接 */
@@ -385,23 +407,44 @@ body {
     margin: 1.5em 0;
 }
 
-#write ul li, #write ol li {
+/* 嵌套列表紧贴父项，避免与父项之间出现一整行空白（官方主题同样是 0） */
+#write li > ul,
+#write li > ol {
+    margin: var(--fluent-space-sm) 0 0;
+}
+
+/* Typora 的 base.css 里 li p 是 .5rem，本主题的 #write p 1.2em 把它盖掉了，
+   导致列表项内部空出一整行。这里显式收回。 */
+#write li > p {
+    margin: 0.5em 0;
+}
+
+#write li > p:first-child {
+    margin-top: 0;
+}
+
+#write li > p:last-child {
+    margin-bottom: 0;
+}
+
+/* 只对列表项本身生效：ul/ol 直接子项，避免嵌套列表互相污染 */
+#write li {
     margin: var(--fluent-space-sm) 0;
     line-height: 1.7;
     position: relative;
-    transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
+    transition: color var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
-#write ul li:hover, #write ol li:hover {
-    color: var(--fluent-primary);
+#write li:hover {
+    color: var(--fluent-primary-text);
 }
 
-/* 无序列表样式 */
+/* 无序列表样式 —— 仅 ul 的直接子项画圆点，ol 内的子项不会误画 */
 #write ul {
     list-style: none;
 }
 
-#write ul li::before {
+#write ul > li::before {
     content: '';
     position: absolute;
     left: -20px;
@@ -414,35 +457,40 @@ body {
     transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
-#write ul li:hover::before {
+#write ul > li:hover::before {
     background: var(--fluent-primary-hover);
     transform: scale(1.2);
     box-shadow: var(--fluent-shadow-4);
 }
 
-#write ul ul li::before {
+#write ul ul > li::before {
     background: var(--fluent-secondary);
     width: 4px;
     height: 4px;
 }
 
-#write ul ul ul li::before {
+#write ul ul ul > li::before {
     background: var(--fluent-grey-90);
     width: 3px;
     height: 3px;
 }
 
-/* 有序列表样式 */
+/* 有序列表样式 —— 每层 ol 独立计数，嵌套不会串号 */
 #write ol {
     counter-reset: item;
     list-style: none;
 }
 
-#write ol li {
+/* 支持 Markdown 的 ol start 起始序号；不支持 typed attr() 的引擎会忽略本条并回退到上面的 reset */
+#write ol[start] {
+    counter-reset: item calc(attr(start type(<integer>), 1) - 1);
+}
+
+#write ol > li {
     counter-increment: item;
 }
 
-#write ol li::before {
+#write ol > li::before {
     content: counter(item);
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-primary-light) 100%);
     color: var(--fluent-text-white);
@@ -461,7 +509,7 @@ body {
     transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
-#write ol li:hover::before {
+#write ol > li:hover::before {
     background: linear-gradient(135deg, var(--fluent-primary-hover) 0%, var(--fluent-primary) 100%);
     transform: scale(1.1);
     box-shadow: var(--fluent-shadow-8);
@@ -477,19 +525,25 @@ body {
     display: none;
 }
 
+/* Typora 的 checkbox 是绝对定位在行首的；这里保持 absolute，否则会被拆到标题段落上方单独成行 */
 #write .md-task-list-item > input {
     appearance: none;
+    -webkit-appearance: none;
+    box-sizing: border-box;
     width: 18px;
     height: 18px;
     border: 2px solid var(--fluent-primary);
     border-radius: var(--fluent-corner-radius-small);
     background: var(--fluent-surface);
-    margin-right: var(--fluent-space-sm);
     margin-left: -24px;
-    position: relative;
+    margin-top: calc(1em - 11px);
+    position: absolute;
+    top: 0;
+    left: 0;
     cursor: pointer;
     transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 #write .md-task-list-item > input:checked {
@@ -498,6 +552,7 @@ body {
     box-shadow: var(--fluent-shadow-4);
 }
 
+/* 对勾画在内层，避免 absolute 定位的 ::after 相对于 input 的 border-box 偏移 */
 #write .md-task-list-item > input:checked::after {
     content: '✓';
     position: absolute;
@@ -507,6 +562,7 @@ body {
     color: var(--fluent-text-white);
     font-size: 12px;
     font-weight: bold;
+    line-height: 1;
 }
 
 #write .md-task-list-item > input:hover {
@@ -645,20 +701,12 @@ body {
     color: var(--fluent-text-tertiary);
 }
 
+/* 源码模式下的围栏语法文本（``` + 语言名）。
+   注意：.md-lang 不是屏幕上的语言徽标，它是编辑器源码模式里的一段行内语法字符，
+   绝对定位会让 ``` 和语言名脱离文档流，故这里只做着色。 */
 #write .md-lang {
-    position: absolute;
-    top: var(--fluent-space-sm);
-    right: var(--fluent-space-lg);
-    background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-secondary) 100%);
-    color: var(--fluent-text-white);
-    padding: 4px var(--fluent-space-sm);
-    border-radius: var(--fluent-corner-radius-medium);
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    box-shadow: var(--fluent-shadow-4);
-    backdrop-filter: blur(10px);
+    color: var(--fluent-primary-text);
+    font-family: var(--fluent-font-mono);
 }
 
 /* ===== Fluent Design 引用块 ===== */
@@ -668,7 +716,7 @@ body {
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-left: 4px solid var(--fluent-info);
     border-radius: 0 var(--fluent-corner-radius-large) var(--fluent-corner-radius-large) 0;
-    padding: var(--fluent-space-lg) var(--fluent-space-xl);
+    padding: var(--fluent-space-xxl) var(--fluent-space-xl) var(--fluent-space-lg);
     margin: var(--fluent-space-xxl) 0;
     position: relative;
     box-shadow: var(--fluent-shadow-8);
@@ -681,15 +729,16 @@ body {
 }
 
 #write blockquote::before {
-    content: '"';
-    font-size: 3rem;
+    content: '\201C';
+    font-size: 3.5rem;
     color: var(--fluent-info);
     position: absolute;
-    top: -8px;
+    top: 2px;
     left: var(--fluent-space-lg);
-    opacity: 0.3;
+    opacity: 0.45;
     font-family: var(--fluent-font-display);
     line-height: 1;
+    pointer-events: none;
 }
 
 #write blockquote p {
@@ -771,8 +820,8 @@ body {
 }
 
 #write table tbody tr {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
+    border-bottom: 1px solid var(--fluent-grey-40);
+    transition: background-color var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
 #write table tbody tr:hover {
@@ -837,15 +886,22 @@ body {
     vertical-align: middle;
 }
 
+/* 只把「独占一段的图片」做成块级卡片；正文中夹在文字里的行内图片必须保持 inline，
+   否则会被强制换行、把一句话拆成三段。 */
 #write .md-image img,
 #write p > img:only-child,
 #write p > a:only-child img {
     border-radius: var(--fluent-corner-radius-large);
     box-shadow: var(--fluent-shadow-8);
-    margin: var(--fluent-space-sm) 0;
-    display: block;
     transition: all var(--fluent-duration-slow) var(--fluent-easing-standard);
     border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#write p > img:only-child,
+#write p > a:only-child img,
+#write .md-image:only-child img {
+    margin: var(--fluent-space-sm) 0;
+    display: block;
 }
 
 #write .md-image img:hover,
@@ -877,17 +933,35 @@ body {
 }
 
 /* ===== Fluent Design 脚注 ===== */
-#write .footnotes {
+/* Typora 导出时脚注区是 .footnotes-area > .footnote-line；
+   编辑器里的脚注定义块是 .footnotes.md-def-footnote，两者样式分开处理。 */
+#write .footnotes-area {
     border-top: 2px solid var(--fluent-primary);
     margin-top: var(--fluent-space-xxxl);
     padding-top: var(--fluent-space-xxl);
+    font-size: 0.9rem;
+    color: var(--fluent-text-secondary);
+}
+
+#write .footnotes-area hr {
+    display: none;
+}
+
+#write .footnote-line {
+    margin: var(--fluent-space-md) 0;
+    color: var(--fluent-text-secondary);
+    line-height: 1.7;
+}
+
+#write .footnotes.md-def-footnote {
     background: var(--fluent-surface-secondary);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-radius: var(--fluent-corner-radius-large);
-    padding: var(--fluent-space-xxl);
-    box-shadow: var(--fluent-shadow-8);
+    padding: var(--fluent-space-md) var(--fluent-space-lg);
+    margin: var(--fluent-space-md) 0;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.9rem;
 }
 
 #write .footnotes ol {
@@ -899,21 +973,24 @@ body {
     margin: var(--fluent-space-lg) 0;
 }
 
-#write .footnote-ref {
+/* 引用角标：Typora 实际结构是 sup.md-footnote > a */
+#write sup.md-footnote {
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-secondary) 100%);
-    color: var(--fluent-text-white);
-    padding: 2px 6px;
     border-radius: var(--fluent-corner-radius-medium);
+    padding: 1px 6px;
     font-size: 0.75rem;
     font-weight: 600;
-    text-decoration: none;
     box-shadow: var(--fluent-shadow-4);
-    transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
-    backdrop-filter: blur(10px);
+    transition: box-shadow var(--fluent-duration-fast) var(--fluent-easing-standard);
 }
 
-#write .footnote-ref:hover {
-    background: linear-gradient(135deg, var(--fluent-primary-hover) 0%, var(--fluent-secondary-light) 100%);
+#write sup.md-footnote,
+#write sup.md-footnote a {
+    color: var(--fluent-text-white);
+    text-decoration: none;
+}
+
+#write sup.md-footnote:hover {
     box-shadow: var(--fluent-shadow-8);
 }
 
@@ -938,41 +1015,66 @@ body {
     background: transparent;
 }
 
+/* Typora 的 base.css 已给 .md-toc-inner 加了 2em/4em... 的 margin-left（用于它自己的缩进），
+   这里改用对齐到「列表项」上的缩进，所以必须先清掉内层 anchor 的 margin，否则会双重缩进。 */
+#write .md-toc-inner {
+    margin-left: 0;
+    padding: 0;
+}
+
+#write .md-toc-item {
+    display: block;
+}
+
 #write .md-toc-h1 {
     font-weight: 700;
-    color: var(--fluent-primary);
     font-size: 1.1rem;
+    margin-left: 0;
+}
+
+#write .md-toc-h1 .md-toc-inner {
+    color: var(--fluent-primary-text);
 }
 
 #write .md-toc-h2 {
     font-weight: 600;
-    color: var(--fluent-text-primary);
-    margin-left: var(--fluent-space-lg);
     font-size: 1rem;
+    margin-left: var(--fluent-space-lg);
+}
+
+#write .md-toc-h2 .md-toc-inner {
+    color: var(--fluent-text-primary);
 }
 
 #write .md-toc-h3 {
-    color: var(--fluent-text-secondary);
-    margin-left: var(--fluent-space-xl);
     font-size: 0.9rem;
+    margin-left: var(--fluent-space-xxxl);
 }
 
 #write .md-toc-h4 {
-    color: var(--fluent-text-secondary);
-    margin-left: var(--fluent-space-xxl);
     font-size: 0.85rem;
+    margin-left: 48px;
+}
+
+#write .md-toc-h3 .md-toc-inner,
+#write .md-toc-h4 .md-toc-inner {
+    color: var(--fluent-text-secondary);
 }
 
 #write .md-toc-h5 {
-    color: var(--fluent-text-tertiary);
-    margin-left: 40px;
     font-size: 0.8rem;
+    margin-left: 64px;
 }
 
 #write .md-toc-h6 {
-    color: var(--fluent-text-tertiary);
-    margin-left: 48px;
     font-size: 0.75rem;
+    margin-left: 80px;
+}
+
+#write .md-toc-h5 .md-toc-inner,
+#write .md-toc-h6 .md-toc-inner {
+    /* --fluent-text-tertiary (#8a8886) 只有 3.5:1，改用更深的二级灰 */
+    color: var(--fluent-text-secondary);
 }
 
 /* ===== Fluent Design 卡片组件 ===== */
@@ -1181,6 +1283,65 @@ body {
     opacity: 0.2;
 }
 
+/* ===== Typora / GitHub Alert 支持 ===== */
+/* Typora 导出的告警块结构：
+   <div class="md-alert md-alert-{note|tip|important|warning|caution}">
+   此前主题只定义了虚构的 .fluent-alert-*，真实导出的告警因此完全没有样式。 */
+#write .md-alert {
+    padding: var(--fluent-space-lg) var(--fluent-space-xl);
+    border-radius: 0 var(--fluent-corner-radius-large) var(--fluent-corner-radius-large) 0;
+    margin: var(--fluent-space-xxl) 0;
+    position: relative;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: 4px solid;
+    box-shadow: var(--fluent-shadow-8);
+    transition: all var(--fluent-duration-normal) var(--fluent-easing-standard);
+}
+
+#write .md-alert:hover {
+    box-shadow: var(--fluent-shadow-16);
+}
+
+#write .md-alert-note {
+    background: var(--fluent-info-background);
+    border-left-color: var(--fluent-info);
+}
+
+#write .md-alert-tip {
+    background: var(--fluent-success-background);
+    border-left-color: var(--fluent-success);
+}
+
+#write .md-alert-important {
+    background: rgba(135, 100, 184, 0.12);
+    border-left-color: var(--fluent-secondary);
+}
+
+#write .md-alert-warning {
+    background: var(--fluent-warning-background);
+    border-left-color: var(--fluent-warning);
+}
+
+#write .md-alert-caution {
+    background: var(--fluent-error-background);
+    border-left-color: var(--fluent-error);
+}
+
+/* 标签文字颜色（note/tip/important/warning/caution 五种语义色）
+   注：#107c10 与 #d13438 在对应浅色容器底上只有 4.4/4.0:1，已换成同色系深色。 */
+#write .md-alert-text-note { color: var(--fluent-primary-text); }
+#write .md-alert-text-tip { color: #0b5c0b; }
+#write .md-alert-text-important { color: var(--fluent-secondary-dark); }
+#write .md-alert-text-warning { color: #8a4b00; }
+#write .md-alert-text-caution { color: #b32024; }
+
+/* 标签文字已占据左侧，额外的装饰圆点会与文字重叠，故不绘制 */
+#write .md-alert::before {
+    content: none;
+}
+
 /* ===== Fluent Design Chip 组件 ===== */
 #write .fluent-chip {
     display: inline-flex;
@@ -1289,23 +1450,28 @@ body {
     box-shadow: var(--fluent-shadow-16);
 }
 
-#typora-quick-open-item {
+.typora-quick-open-item {
     background: transparent;
     border: none;
     color: var(--fluent-text-primary);
-    padding: var(--fluent-space-md);
-    transition: all var(--fluent-duration-fast) var(--fluent-easing-standard);
+    /* Typora 把每项固定为 40px 高且 overflow:hidden，原来的 12px 内边距会把
+       第二行的路径文字裁掉。改为只留水平内边距，高度由内容撑开。 */
+    padding: 4px var(--fluent-space-md);
+    height: auto;
+    min-height: 40px;
+    transition: background-color var(--fluent-duration-fast) var(--fluent-easing-standard),
+                color var(--fluent-duration-fast) var(--fluent-easing-standard);
     border-radius: var(--fluent-corner-radius-medium);
     margin: 2px;
 }
 
-#typora-quick-open-item:hover {
+.typora-quick-open-item:hover {
     background: rgba(0, 120, 212, 0.1);
     color: var(--fluent-primary);
     transform: translateX(2px);
 }
 
-#typora-quick-open-item.active {
+.typora-quick-open-item.active {
     background: linear-gradient(135deg, var(--fluent-primary) 0%, var(--fluent-primary-light) 100%);
     color: var(--fluent-text-white);
     box-shadow: var(--fluent-shadow-4);
@@ -1454,6 +1620,7 @@ body {
 @media print {
     html {
         font-size: 13px;
+        background: #fff;
     }
 
     body {
@@ -1478,12 +1645,52 @@ body {
         -webkit-text-fill-color: black;
     }
 
+    /* H1 里的行内代码会被上面的 -webkit-text-fill-color: black 覆盖成黑色，
+       与标题同色反而可读；这里保证即使打印也保持明确的填充色。 */
+    #write h1 code, #write h2 code {
+        -webkit-text-fill-color: black;
+    }
+
     #write h1::after, #write h2::before, #write h3::before {
         display: none;
     }
 
+    /* 半透明卡片在打印时几乎不可见，换成纯色/描边 */
+    #write pre,
+    #write .md-fences,
+    #write blockquote,
+    #write .fluent-card,
+    #write .fluent-alert,
+    #write .md-alert,
+    #write .md-toc {
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    #write pre,
+    #write .md-fences {
+        background: #f5f5f5;
+    }
+
     #write table, #write pre {
         page-break-inside: avoid;
+    }
+
+    #write table thead {
+        background: #eef2f7;
+    }
+
+    #write table thead th {
+        color: #1a1a1a;
+    }
+
+    #write table tbody tr {
+        border-bottom: 1px solid #d8dde6;
+    }
+
+    #write table tbody td {
+        color: #1a1a1a;
     }
 
     #write pre {

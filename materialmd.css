@@ -183,11 +183,11 @@ body {
     color: var(--md-on-surface-variant);
 }
 
-/* 删除线 */
+/* 删除线：0.7 透明度会让 #757575 掉到 2.7:1，改用不透明的中灰 */
 #write del {
     text-decoration: line-through;
-    color: var(--md-on-surface-variant);
-    opacity: 0.7;
+    color: #616161;
+    opacity: 1;
 }
 
 /* 高亮文本 */
@@ -205,7 +205,8 @@ body {
     font-size: 0.875rem;
     font-weight: 500;
     background-color: var(--md-surface-container-high);
-    color: var(--md-primary);
+    /* #1976d2 在 #f0f0f0 上只有 4.0:1，行内代码用更深的 --md-primary-variant */
+    color: var(--md-primary-variant);
     padding: 2px 6px;
     border-radius: var(--md-corner-xs);
     border: 1px solid rgba(0, 0, 0, 0.08);
@@ -314,18 +315,39 @@ body {
     margin: 1.5em 0;
 }
 
-#write ul li, #write ol li {
+/* 嵌套列表紧贴父项，避免与父项之间出现一整行空白（官方主题同样是 0） */
+#write li > ul,
+#write li > ol {
+    margin: var(--md-space-sm) 0 0;
+}
+
+/* Typora 的 base.css 里 li p 是 .5rem，本主题的 #write p 1.2em 把它盖掉了，
+   导致列表项内部空出一整行。这里显式收回。 */
+#write li > p {
+    margin: 0.5em 0;
+}
+
+#write li > p:first-child {
+    margin-top: 0;
+}
+
+#write li > p:last-child {
+    margin-bottom: 0;
+}
+
+/* 只作用于列表项本身，避免嵌套 ul/ol 之间互相覆盖 */
+#write li {
     margin: var(--md-space-sm) 0;
     line-height: 1.7;
     position: relative;
 }
 
-/* 无序列表 - Material Design 风格 */
+/* 无序列表 - Material Design 风格。用直接子选择器，ol 里的子项不会误画圆点 */
 #write ul {
     list-style: none;
 }
 
-#write ul li::before {
+#write ul > li::before {
     content: '•';
     color: var(--md-primary);
     font-size: 1.2em;
@@ -334,27 +356,32 @@ body {
     top: 0;
 }
 
-#write ul ul li::before {
+#write ul ul > li::before {
     content: '◦';
     color: var(--md-secondary);
 }
 
-#write ul ul ul li::before {
+#write ul ul ul > li::before {
     content: '▪';
     color: var(--md-on-surface-variant);
 }
 
-/* 有序列表 - Material Design 风格 */
+/* 有序列表 - Material Design 风格。每层 ol 独立计数 */
 #write ol {
     counter-reset: item;
     list-style: none;
 }
 
-#write ol li {
+/* 支持 ol start 起始序号；不支持 typed attr() 的引擎会忽略本条并回退到上面的 reset */
+#write ol[start] {
+    counter-reset: item calc(attr(start type(<integer>), 1) - 1);
+}
+
+#write ol > li {
     counter-increment: item;
 }
 
-#write ol li::before {
+#write ol > li::before {
     content: counter(item);
     background-color: var(--md-primary);
     color: var(--md-on-primary);
@@ -384,14 +411,18 @@ body {
 
 #write .md-task-list-item > input {
     appearance: none;
+    -webkit-appearance: none;
+    box-sizing: border-box;
     width: 18px;
     height: 18px;
     border: 2px solid var(--md-on-surface-variant);
     border-radius: var(--md-corner-xs);
     background-color: transparent;
-    margin-right: var(--md-space-sm);
     margin-left: -24px;
-    position: relative;
+    margin-top: calc(1em - 11px);
+    position: absolute;
+    top: 0;
+    left: 0;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
@@ -411,6 +442,7 @@ body {
     color: var(--md-on-primary);
     font-size: 12px;
     font-weight: bold;
+    line-height: 1;
 }
 
 #write .md-task-list-item > input:hover {
@@ -503,19 +535,12 @@ body {
     color: var(--md-on-surface-variant);
 }
 
+/* 源码模式下的围栏语法文本（``` + 语言名）。
+   注意：.md-lang 不是屏幕上的语言徽标，它是编辑器源码模式里的一段行内语法字符，
+   绝对定位会让 ``` 和语言名脱离文档流，故这里只做着色。 */
 #write .md-lang {
-    position: absolute;
-    top: var(--md-space-sm);
-    right: var(--md-space-md);
-    background-color: var(--md-primary);
-    color: var(--md-on-primary);
-    padding: 4px var(--md-space-sm);
-    border-radius: var(--md-corner-sm);
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    box-shadow: var(--md-elevation-1);
+    color: var(--md-primary-variant);
+    font-family: var(--md-font-mono);
 }
 
 /* ===== Material Design 引用块 ===== */
@@ -523,22 +548,23 @@ body {
     background-color: var(--md-info-container);
     border-left: 4px solid var(--md-info);
     border-radius: 0 var(--md-corner-md) var(--md-corner-md) 0;
-    padding: var(--md-space-md) var(--md-space-lg);
+    padding: var(--md-space-xl) var(--md-space-lg) var(--md-space-md);
     margin: var(--md-space-lg) 0;
     position: relative;
     box-shadow: var(--md-elevation-1);
 }
 
 #write blockquote::before {
-    content: '"';
-    font-size: 3rem;
+    content: '\201C';
+    font-size: 3.5rem;
     color: var(--md-info);
     position: absolute;
-    top: -8px;
+    top: 2px;
     left: var(--md-space-md);
-    opacity: 0.3;
+    opacity: 0.45;
     font-family: var(--md-font-display);
     line-height: 1;
+    pointer-events: none;
 }
 
 #write blockquote p {
@@ -660,15 +686,22 @@ body {
     vertical-align: middle;
 }
 
+/* 只把「独占一段的图片」做成块级卡片；正文中夹在文字里的行内图片必须保持 inline，
+   否则会被强制换行、把一句话拆成三段。 */
 #write .md-image img,
 #write p > img:only-child,
 #write p > a:only-child img {
     border-radius: var(--md-corner-md);
     box-shadow: var(--md-elevation-2);
-    margin: var(--md-space-sm) 0;
-    display: block;
     transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
                 box-shadow 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+#write p > img:only-child,
+#write p > a:only-child img,
+#write .md-image:only-child img {
+    margin: var(--md-space-sm) 0;
+    display: block;
 }
 
 #write .md-image img:hover,
@@ -693,14 +726,32 @@ body {
 }
 
 /* ===== Material Design 脚注 ===== */
-#write .footnotes {
+/* Typora 导出时脚注区是 .footnotes-area > .footnote-line；
+   编辑器里的脚注定义块是 .footnotes.md-def-footnote。 */
+#write .footnotes-area {
     border-top: 2px solid var(--md-primary);
     margin-top: var(--md-space-xxl);
     padding-top: var(--md-space-lg);
+    font-size: 0.875rem;
+    color: var(--md-on-surface-variant);
+}
+
+#write .footnotes-area hr {
+    display: none;
+}
+
+#write .footnote-line {
+    margin: var(--md-space-sm) 0;
+    color: var(--md-on-surface-variant);
+    line-height: 1.7;
+}
+
+#write .footnotes.md-def-footnote {
     background-color: var(--md-surface-variant);
     border-radius: var(--md-corner-md);
-    padding: var(--md-space-lg);
-    box-shadow: var(--md-elevation-1);
+    padding: var(--md-space-md) var(--md-space-lg);
+    margin: var(--md-space-sm) 0;
+    font-size: 0.875rem;
 }
 
 #write .footnotes ol {
@@ -712,21 +763,25 @@ body {
     margin: var(--md-space-md) 0;
 }
 
-#write .footnote-ref {
+/* 引用角标：Typora 实际结构是 sup.md-footnote > a */
+#write sup.md-footnote {
     background-color: var(--md-primary);
-    color: var(--md-on-primary);
-    padding: 2px 6px;
     border-radius: var(--md-corner-xs);
+    padding: 1px 6px;
     font-size: 0.75rem;
     font-weight: 600;
-    text-decoration: none;
     box-shadow: var(--md-elevation-1);
-    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: background-color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
-#write .footnote-ref:hover {
+#write sup.md-footnote,
+#write sup.md-footnote a {
+    color: var(--md-on-primary);
+    text-decoration: none;
+}
+
+#write sup.md-footnote:hover {
     background-color: var(--md-primary-variant);
-    box-shadow: var(--md-elevation-2);
 }
 
 /* ===== Material Design 目录 ===== */
@@ -743,42 +798,66 @@ body {
     background: transparent;
 }
 
+/* base.css 自带的 .md-toc-inner { margin-left: 2em/4em/... } 会与本主题的
+   「按层级缩进 .md-toc-item」叠加成双重缩进，这里清掉内层 margin。 */
+#write .md-toc-inner {
+    margin-left: 0;
+    padding: 0;
+}
+
+#write .md-toc-item {
+    display: block;
+}
+
 #write .md-toc-h1 {
     font-weight: 600;
-    color: var(--md-primary);
     font-size: 1rem;
+    margin-left: 0;
+}
+
+#write .md-toc-h1 .md-toc-inner {
+    /* #1976d2 在 TOC 的 #fafafa 底上只有 4.4:1，改用更深的 variant */
+    color: var(--md-primary-variant);
 }
 
 #write .md-toc-h2 {
     font-weight: 500;
-    color: var(--md-on-surface);
-    margin-left: var(--md-space-md);
     font-size: 0.9rem;
+    margin-left: var(--md-space-md);
+}
+
+#write .md-toc-h2 .md-toc-inner {
+    color: var(--md-on-surface);
 }
 
 #write .md-toc-h3 {
-    color: var(--md-on-surface-variant);
-    margin-left: var(--md-space-lg);
     font-size: 0.85rem;
+    margin-left: var(--md-space-lg);
 }
 
 #write .md-toc-h4 {
-    color: var(--md-on-surface-variant);
-    margin-left: var(--md-space-xl);
     font-size: 0.8rem;
+    margin-left: var(--md-space-xl);
+}
+
+#write .md-toc-h3 .md-toc-inner,
+#write .md-toc-h4 .md-toc-inner,
+#write .md-toc-h5 .md-toc-inner,
+#write .md-toc-h6 .md-toc-inner {
+    /* --md-on-surface-variant (#757575) 在 #fafafa 上只有 4.41:1，小字号不达标 */
+    color: #616161;
 }
 
 #write .md-toc-h5 {
-    color: var(--md-on-surface-variant);
-    margin-left: 40px;
     font-size: 0.75rem;
+    margin-left: 40px;
 }
 
 #write .md-toc-h6 {
-    color: var(--md-on-surface-variant);
-    margin-left: 48px;
     font-size: 0.7rem;
+    margin-left: 48px;
 }
+
 
 /* ===== Material Design 卡片组件 ===== */
 #write .md-card {
@@ -926,6 +1005,9 @@ body {
 }
 
 /* ===== Material Design 提示框系统 ===== */
+/* Typora 导出的 GitHub Alert 结构为
+   div.md-alert.md-alert-(note|tip|important|warning|caution)，
+   标签文字在 .md-alert-text-（同上）上着色。以下按这套真实类名适配。 */
 #write .md-alert {
     padding: var(--md-space-md) var(--md-space-lg);
     border-radius: var(--md-corner-md);
@@ -933,18 +1015,26 @@ body {
     position: relative;
     box-shadow: var(--md-elevation-1);
     border-left: 4px solid;
+    background-color: var(--md-surface-container);
+    color: var(--md-on-surface);
 }
 
-#write .md-alert-info {
+#write .md-alert-note {
     background-color: var(--md-info-container);
     color: var(--md-on-info-container);
     border-left-color: var(--md-info);
 }
 
-#write .md-alert-success {
+#write .md-alert-tip {
     background-color: var(--md-success-container);
     color: var(--md-on-success-container);
     border-left-color: var(--md-success);
+}
+
+#write .md-alert-important {
+    background-color: #f3e8fd;
+    color: #4a148c;
+    border-left-color: #7b1fa2;
 }
 
 #write .md-alert-warning {
@@ -953,22 +1043,22 @@ body {
     border-left-color: var(--md-warning);
 }
 
-#write .md-alert-error {
+#write .md-alert-caution {
     background-color: var(--md-error-container);
     color: var(--md-on-error-container);
     border-left-color: var(--md-error);
 }
+/* 标签文字颜色：原语义色在各自的浅色容器底上只有 3.4~4.4:1，
+   这里统一换成同色系的深色调（实测 4.9:1 以上）。 */
+#write .md-alert-text-note { color: #01579b; }
+#write .md-alert-text-tip { color: var(--md-on-success-container); }
+#write .md-alert-text-important { color: #7b1fa2; }
+#write .md-alert-text-warning { color: #b34700; }
+#write .md-alert-text-caution { color: var(--md-on-error-container); }
 
+/* 装饰圆点：Typora 的标签文字本身就在左侧，圆点会叠在文字上，故移除 */
 #write .md-alert::before {
-    content: '';
-    position: absolute;
-    top: var(--md-space-md);
-    left: var(--md-space-md);
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: currentColor;
-    opacity: 0.2;
+    content: none;
 }
 
 /* ===== Material Design Chip 组件 ===== */
@@ -1065,20 +1155,25 @@ body {
     box-shadow: var(--md-elevation-3);
 }
 
-#typora-quick-open-item {
+.typora-quick-open-item {
     background: transparent;
     border: none;
     color: var(--md-on-surface);
-    padding: var(--md-space-md);
-    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    /* Typora 把每项固定为 40px 高且 overflow:hidden，原来的 16px 内边距会把
+       第二行的路径文字裁掉。改为只留水平内边距，高度由内容撑开。 */
+    padding: 4px var(--md-space-md);
+    height: auto;
+    min-height: 40px;
+    transition: background-color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1),
+                color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
-#typora-quick-open-item:hover {
+.typora-quick-open-item:hover {
     background-color: rgba(25, 118, 210, 0.08);
     color: var(--md-primary);
 }
 
-#typora-quick-open-item.active {
+.typora-quick-open-item.active {
     background-color: var(--md-primary);
     color: var(--md-on-primary);
 }
@@ -1219,6 +1314,24 @@ body {
 
     #write table, #write pre {
         page-break-inside: avoid;
+    }
+
+    /* 表头底纹打印时会被丢弃，需显式加深文字与描边 */
+    #write table thead {
+        background: #eef2f7;
+    }
+
+    #write table thead th {
+        color: #1a1a1a;
+        border-bottom: 2px solid #9aa4b2;
+    }
+
+    #write table tbody tr {
+        border-bottom: 1px solid #d8dde6;
+    }
+
+    #write table tbody td {
+        color: #1a1a1a;
     }
 
     #write pre {

@@ -14,7 +14,7 @@
     /* 文字颜色 */
     --text-primary: #e2e8f0;
     --text-secondary: #94a3b8;
-    --text-muted: #64748b;
+    --text-muted: #8b9bb0;
     --text-inverse: #0f172a;
     
     /* 霓虹色彩 */
@@ -23,6 +23,14 @@
     --neon-pink: #ec4899;
     --neon-green: #10b981;
     --neon-orange: #f59e0b;
+
+    /* 深色底上的文字用「提亮版」霓虹色：
+       原始 #8b5cf6 / #ec4899 在 #1a1a2e 上对比度只有 4.0 / 4.8，
+       小字号和 H3/H4 会明显发暗。以下取值经实测达到 WCAG AA(4.5:1) 以上。 */
+    --neon-purple-text: #a78bfa;
+    --neon-pink-text: #f472b6;
+    --neon-green-text: #34d399;
+    --neon-orange-text: #fbbf24;
     
     /* 渐变色彩 */
     --gradient-primary: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
@@ -171,16 +179,17 @@ body {
 }
 
 #write em {
-    color: var(--neon-purple);
+    color: var(--neon-purple-text);
     font-style: italic;
     text-shadow: 0 0 5px rgba(139, 92, 246, 0.3);
 }
 
 /* 删除线 */
+/* 删除线：0.7 透明度在深色底上不可读，改用提升后的 --text-muted 并去掉透明度 */
 #write del {
     color: var(--text-muted);
     text-decoration: line-through;
-    opacity: 0.7;
+    opacity: 1;
 }
 
 /* 高亮文本 */
@@ -240,6 +249,33 @@ body {
     content: none;
 }
 
+/* H1/H2 用 -webkit-text-fill-color: transparent + 渐变裁剪做霓虹字。
+   该属性会被子元素继承，导致标题里的行内代码/链接/加粗整段"消失"（实测渲染为全透明）。
+   这里把子元素恢复成实体填充色。 */
+#write h1 code, #write h2 code {
+    -webkit-text-fill-color: var(--neon-green);
+    color: var(--neon-green);
+}
+
+#write h1 strong, #write h2 strong {
+    -webkit-text-fill-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+}
+
+#write h1 em, #write h2 em {
+    -webkit-text-fill-color: var(--neon-purple-text);
+    color: var(--neon-purple-text);
+}
+
+#write h1 del, #write h2 del,
+#write h1 a, #write h2 a {
+    -webkit-text-fill-color: currentColor;
+}
+
+#write h1 kbd, #write h2 kbd {
+    -webkit-text-fill-color: var(--neon-cyan);
+}
+
 #write h2 {
     font-size: 2rem;
     background: var(--gradient-secondary);
@@ -253,7 +289,7 @@ body {
 
 #write h3 {
     font-size: 1.5rem;
-    color: var(--neon-purple);
+    color: var(--neon-purple-text);
     text-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
     position: relative;
 }
@@ -267,7 +303,7 @@ body {
 
 #write h4 {
     font-size: 1.25rem;
-    color: var(--neon-pink);
+    color: var(--neon-pink-text);
     text-shadow: 0 0 6px rgba(236, 72, 153, 0.4);
     padding-left: 0;
     text-indent: 0;
@@ -287,13 +323,13 @@ body {
 
 #write h5 {
     font-size: 1.1rem;
-    color: var(--neon-green);
+    color: var(--neon-green-text);
     text-shadow: 0 0 5px rgba(16, 185, 129, 0.4);
 }
 
 #write h6 {
     font-size: 1rem;
-    color: var(--neon-orange);
+    color: var(--neon-orange-text);
     text-shadow: 0 0 4px rgba(245, 158, 11, 0.4);
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -321,18 +357,39 @@ body {
     margin: 1.5em 0;
 }
 
-#write ul li, #write ol li {
+/* 嵌套列表紧贴父项，避免与父项之间出现一整行空白（官方主题同样是 0） */
+#write li > ul,
+#write li > ol {
+    margin: 0.5rem 0 0;
+}
+
+/* Typora 的 base.css 里 li p 是 .5rem，本主题的 #write p 1.2em 把它盖掉了，
+   导致列表项内部空出一整行。这里显式收回。 */
+#write li > p {
+    margin: 0.5em 0;
+}
+
+#write li > p:first-child {
+    margin-top: 0;
+}
+
+#write li > p:last-child {
+    margin-bottom: 0;
+}
+
+/* 只作用于列表项本身，嵌套列表之间不再互相覆盖 margin */
+#write li {
     margin: 0.8rem 0;
     line-height: 1.7;
     position: relative;
 }
 
-/* 无序列表样式 */
+/* 无序列表样式：仅 ul 的直接子项画标记，ol 内部的项不会误画 */
 #write ul {
     list-style: none;
 }
 
-#write ul li::before {
+#write ul > li::before {
     content: '◆';
     color: var(--neon-cyan);
     font-size: 0.8em;
@@ -342,27 +399,32 @@ body {
     text-shadow: var(--shadow-text);
 }
 
-#write ul ul li::before {
+#write ul ul > li::before {
     content: '▸';
-    color: var(--neon-purple);
+    color: var(--neon-purple-text);
 }
 
-#write ul ul ul li::before {
+#write ul ul ul > li::before {
     content: '•';
-    color: var(--neon-pink);
+    color: var(--neon-pink-text);
 }
 
-/* 有序列表样式 */
+/* 有序列表样式：每层 ol 独立计数，嵌套不会串号 */
 #write ol {
     counter-reset: item;
     list-style: none;
 }
 
-#write ol li {
+/* 支持 ol start 起始序号；不支持 typed attr() 的引擎会忽略本条并回退到上面的 reset */
+#write ol[start] {
+    counter-reset: item calc(attr(start type(<integer>), 1) - 1);
+}
+
+#write ol > li {
     counter-increment: item;
 }
 
-#write ol li::before {
+#write ol > li::before {
     content: counter(item);
     background: var(--gradient-primary);
     color: var(--text-inverse);
@@ -526,20 +588,12 @@ body {
     color: var(--neon-cyan) !important;
 }
 
-/* 代码块语言标识 */
+/* 源码模式下的围栏语法文本（``` + 语言名）。
+   注意：.md-lang 不是屏幕上的语言徽标，它是编辑器源码模式里的一段行内语法字符，
+   绝对定位会让 ``` 和语言名脱离文档流，故这里只做着色。 */
 #write .md-lang {
-    position: absolute;
-    top: 8px;
-    right: 12px;
-    background: var(--gradient-secondary);
-    color: var(--text-inverse);
-    padding: 4px 12px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    box-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+    color: var(--neon-cyan);
+    font-family: var(--font-mono);
 }
 
 /* ===== 引用块样式 ===== */
@@ -554,16 +608,18 @@ body {
     box-shadow: var(--shadow-purple);
 }
 
+/* 引号只作装饰：上移留白后不再压住正文，且不拦截鼠标 */
 #write blockquote::before {
-    content: '"';
-    font-size: 4rem;
+    content: '\201C';
+    font-size: 3.5rem;
     color: var(--neon-purple);
     position: absolute;
-    top: -10px;
+    top: 0;
     left: 15px;
-    opacity: 0.3;
+    opacity: 0.45;
     font-family: var(--font-display);
     line-height: 1;
+    pointer-events: none;
 }
 
 #write blockquote p {
@@ -612,11 +668,13 @@ body {
 }
 
 #write table thead {
-    background: var(--gradient-primary);
+    /* 原来的 --gradient-primary（#00f5ff→#8b5cf6）在浅色一端只有 1.35:1，
+       表头文字几乎不可读。换成同色系的深色渐变，白字实测 ≥5.3:1。 */
+    background: linear-gradient(135deg, #0e7490 0%, #6d28d9 100%);
 }
 
 #write table thead th {
-    color: var(--text-inverse);
+    color: #ffffff;
     font-weight: 700;
     padding: 1rem 1.5rem;
     text-align: left;
@@ -687,14 +745,18 @@ body {
 
 #write .md-task-list-item > input {
     appearance: none;
+    -webkit-appearance: none;
+    box-sizing: border-box;
     width: 18px;
     height: 18px;
     border: 2px solid var(--neon-cyan);
     border-radius: 4px;
     background: transparent;
-    margin-right: 0.8rem;
     margin-left: -1.8rem;
-    position: relative;
+    margin-top: calc(1em - 11px);
+    position: absolute;
+    top: 0;
+    left: 0;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -714,6 +776,7 @@ body {
     color: var(--text-inverse);
     font-size: 12px;
     font-weight: bold;
+    line-height: 1;
 }
 
 #write .md-task-list-item > input:hover {
@@ -727,15 +790,22 @@ body {
     vertical-align: middle;
 }
 
+/* 只把「独占一段的图片」做成块级卡片；正文中夹在文字里的行内图片必须保持 inline，
+   否则会被强制换行、把一句话拆成三段。 */
 #write .md-image img,
 #write p > img:only-child,
 #write p > a:only-child img {
     border-radius: 12px;
     box-shadow: var(--shadow-card);
     border: 1px solid var(--border-muted);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#write p > img:only-child,
+#write p > a:only-child img,
+#write .md-image:only-child img {
     margin: 0.5rem 0;
     display: block;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #write .md-image img:hover,
@@ -758,10 +828,33 @@ body {
 }
 
 /* ===== 脚注样式 ===== */
-#write .footnotes {
+/* Typora 导出时脚注区是 .footnotes-area > .footnote-line；
+   编辑器里的脚注定义块是 .footnotes.md-def-footnote。 */
+#write .footnotes-area {
     border-top: 2px solid var(--border-primary);
     margin-top: 3rem;
     padding-top: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+#write .footnotes-area hr {
+    display: none;
+}
+
+#write .footnote-line {
+    margin: 1rem 0;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+#write .footnotes.md-def-footnote {
+    background: var(--bg-code);
+    border: 1px solid var(--border-muted);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
 }
 
 #write .footnotes ol {
@@ -773,18 +866,23 @@ body {
     margin: 1rem 0;
 }
 
-#write .footnote-ref {
-    background: var(--gradient-secondary);
-    color: var(--text-inverse);
-    padding: 2px 6px;
+/* 引用角标：Typora 实际结构是 sup.md-footnote > a */
+#write sup.md-footnote {
+    /* --gradient-secondary(#8b5cf6→#ec4899) 上的浅色文字只有 3.4/2.9:1，
+       改用同色系深色渐变 + 白字（实测 ≥5.3:1）。 */
+    background: linear-gradient(135deg, #6d28d9 0%, #be185d 100%);
     border-radius: 4px;
-    font-size: 0.8em;
-    font-weight: 600;
-    text-decoration: none;
+    padding: 1px 6px;
     box-shadow: 0 0 6px rgba(139, 92, 246, 0.4);
 }
 
-#write .footnote-ref:hover {
+#write sup.md-footnote,
+#write sup.md-footnote a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+#write sup.md-footnote:hover {
     box-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
 }
 
@@ -803,36 +901,66 @@ body {
     background: transparent;
 }
 
+/* base.css 自带的 .md-toc-inner { margin-left: 2em/4em/... } 会与本主题
+   「按层级缩进 .md-toc-item」叠加成双重缩进（实测最深一级缩进 224px），这里清掉内层 margin。 */
+#write .md-toc-inner {
+    margin-left: 0;
+    padding: 0;
+}
+
+#write .md-toc-item {
+    display: block;
+}
+
 #write .md-toc-h1 {
     font-weight: 700;
+    margin-left: 0;
+}
+
+#write .md-toc-h1 .md-toc-inner {
     color: var(--neon-cyan);
     text-shadow: var(--shadow-text);
 }
 
 #write .md-toc-h2 {
     font-weight: 600;
-    color: var(--neon-purple);
     margin-left: 1rem;
 }
 
+#write .md-toc-h2 .md-toc-inner {
+    color: var(--neon-purple-text);
+}
+
 #write .md-toc-h3 {
-    color: var(--neon-pink);
     margin-left: 2rem;
 }
 
+#write .md-toc-h3 .md-toc-inner {
+    color: var(--neon-pink-text);
+}
+
 #write .md-toc-h4 {
-    color: var(--neon-green);
     margin-left: 3rem;
 }
 
+#write .md-toc-h4 .md-toc-inner {
+    color: var(--neon-green-text);
+}
+
 #write .md-toc-h5 {
-    color: var(--neon-orange);
     margin-left: 4rem;
 }
 
+#write .md-toc-h5 .md-toc-inner {
+    color: var(--neon-orange-text);
+}
+
 #write .md-toc-h6 {
-    color: var(--text-secondary);
     margin-left: 5rem;
+}
+
+#write .md-toc-h6 .md-toc-inner {
+    color: var(--text-secondary);
 }
 
 /* ===== 侧边栏样式 ===== */
@@ -858,7 +986,7 @@ body {
 }
 
 .file-node-content.active {
-    color: var(--neon-purple);
+    color: var(--neon-cyan);
     background: var(--gradient-secondary);
     background: rgba(139, 92, 246, 0.2);
     border-radius: 6px;
@@ -886,7 +1014,7 @@ body {
 }
 
 .sidebar-tab.active {
-    color: var(--neon-purple);
+    color: var(--neon-purple-text);
     border-bottom: 2px solid var(--neon-purple);
 }
 
@@ -899,19 +1027,24 @@ body {
     box-shadow: var(--shadow-card);
 }
 
-#typora-quick-open-item {
+.typora-quick-open-item {
     background: transparent;
     border: none;
     color: var(--text-primary);
-    transition: all 0.3s ease;
+    /* Typora 把每项固定为 40px 高且 overflow:hidden，路径行会被裁掉；
+       放开固定高度，让内容撑开。 */
+    height: auto;
+    min-height: 40px;
+    padding: 4px 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-#typora-quick-open-item:hover {
+.typora-quick-open-item:hover {
     background: rgba(0, 245, 255, 0.1);
     color: var(--neon-cyan);
 }
 
-#typora-quick-open-item.active {
+.typora-quick-open-item.active {
     background: var(--gradient-primary);
     color: var(--text-inverse);
 }
@@ -959,30 +1092,119 @@ body {
 @media print {
     html {
         font-size: 13px;
+        background: #fff;
     }
 
     body {
-        background: white;
-        color: black;
+        background: #fff;
+        color: #1a1a1a;
     }
 
     #write {
-        background: white;
+        background: #fff;
         box-shadow: none;
         border: none;
+        border-radius: 0;
         max-width: none;
         margin: 0;
         padding: 0;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        /* 深色主题的正文/列表/表格文字颜色都是浅色，打印到白纸会看不见 */
+        color: #1a1a1a;
+    }
+
+    #write p,
+    #write li,
+    #write li p,
+    #write td,
+    #write em,
+    #write del,
+    #write strong,
+    #write blockquote p,
+    #write .md-toc-inner,
+    #write .md-toc-h1 .md-toc-inner,
+    #write .md-toc-h2 .md-toc-inner,
+    #write .md-toc-h3 .md-toc-inner,
+    #write .md-toc-h4 .md-toc-inner,
+    #write .md-toc-h5 .md-toc-inner,
+    #write .md-toc-h6 .md-toc-inner,
+    #write .footnote-line,
+    #write .footnotes-area,
+    #write .md-alert,
+    #write .md-fences,
+    #write .md-fences code {
+        color: #1a1a1a;
+        text-shadow: none;
     }
 
     #write h1, #write h2, #write h3, #write h4, #write h5, #write h6 {
-        color: black;
+        color: #1a1a1a;
         text-shadow: none;
         background: none;
-        -webkit-text-fill-color: black;
+        -webkit-text-fill-color: #1a1a1a;
     }
 
-    #write table, #write pre {
+    #write h1 code, #write h2 code {
+        -webkit-text-fill-color: #1a1a1a;
+        color: #1a1a1a;
+    }
+
+    #write a {
+        color: #0e7490;
+        text-shadow: none;
+    }
+
+    #write a::after {
+        display: none;
+    }
+
+    #write sup.md-footnote,
+    #write sup.md-footnote a {
+        background: #e5e7eb;
+        color: #1a1a1a;
+        box-shadow: none;
+    }
+
+    #write table,
+    #write .md-toc,
+    #write .md-fences,
+    #write blockquote,
+    #write .md-alert,
+    #write .footnotes.md-def-footnote {
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    /* 深色主题的卡片/表格/提示框背景在打印时会保留深色，必须显式改浅 */
+    #write table,
+    #write .md-toc,
+    #write .md-fences,
+    #write .md-alert,
+    #write .footnotes.md-def-footnote {
+        background: #f7f8fa;
+        border-color: #d8dde6;
+    }
+
+    #write table tbody tr:nth-child(even) {
+        background: #eef1f5;
+    }
+
+    #write table thead {
+        background: #eef2f7;
+    }
+
+    #write table thead th {
+        color: #1a1a1a;
+    }
+
+    #write table tbody tr {
+        border-bottom: 1px solid #d8dde6;
+    }
+
+    #write table,
+    #write pre {
         page-break-inside: avoid;
     }
 
@@ -991,7 +1213,52 @@ body {
         background: #f5f5f5;
         border: 1px solid #ddd;
     }
+
+    #write blockquote {
+        background: #f7f7fa;
+    }
 }
+
+/* ===== Typora / GitHub Alert 支持 ===== */
+/* Typora 导出的告警块结构：
+   <div class="md-alert md-alert-{note|tip|important|warning|caution}">
+   .md-alert-text-* 用于标签文字着色。 */
+#write .md-alert {
+    background: var(--bg-card);
+    border: 1px solid var(--border-muted);
+    border-left: 4px solid;
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+#write .md-alert-note {
+    border-left-color: var(--neon-cyan);
+}
+
+#write .md-alert-tip {
+    border-left-color: var(--neon-green);
+}
+
+#write .md-alert-important {
+    border-left-color: var(--neon-purple-text);
+}
+
+#write .md-alert-warning {
+    border-left-color: var(--neon-orange-text);
+}
+
+#write .md-alert-caution {
+    border-left-color: var(--neon-pink-text);
+}
+
+#write .md-alert-text-note { color: var(--neon-cyan); }
+#write .md-alert-text-tip { color: var(--neon-green-text); }
+#write .md-alert-text-important { color: var(--neon-purple-text); }
+#write .md-alert-text-warning { color: var(--neon-orange-text); }
+#write .md-alert-text-caution { color: var(--neon-pink-text); }
 
 /* ===== 特殊装饰效果 ===== */
 /* 滚动条样式 */
@@ -1174,4 +1441,103 @@ body {
 
 #write .glow {
     animation: glow 3s infinite;
+}
+
+/* ===== 打印覆盖（置于文件末尾，确保覆盖前面的深色屏幕样式） =====
+   深色主题里的卡片/表格/代码块/提示框都用了深色底和 !important 背景，
+   中段那一段打印样式会被后续的屏幕规则覆盖，所以这里集中做最终覆盖。 */
+@media print {
+    html,
+    body,
+    #write {
+        background: #fff !important;
+        color: #1a1a1a !important;
+    }
+
+    #write p,
+    #write li,
+    #write li p,
+    #write td,
+    #write em,
+    #write del,
+    #write strong,
+    #write blockquote p,
+    #write .md-toc-inner,
+    #write .footnote-line,
+    #write .footnotes-area,
+    #write .md-alert,
+    #write .md-fences,
+    #write .md-fences code,
+    #write .md-fences pre {
+        color: #1a1a1a !important;
+        text-shadow: none !important;
+    }
+
+    #write h1,
+    #write h2,
+    #write h3,
+    #write h4,
+    #write h5,
+    #write h6 {
+        color: #1a1a1a !important;
+        text-shadow: none !important;
+        background: none !important;
+        -webkit-text-fill-color: #1a1a1a !important;
+    }
+
+    #write h1 code, #write h2 code,
+    #write h1 strong, #write h2 strong,
+    #write h1 em, #write h2 em {
+        -webkit-text-fill-color: #1a1a1a !important;
+        color: #1a1a1a !important;
+    }
+
+    #write a,
+    #write a::after {
+        color: #0e7490 !important;
+        text-shadow: none !important;
+        background: none !important;
+    }
+
+    #write table,
+    #write .md-toc,
+    #write .md-fences,
+    #write .md-alert,
+    #write .footnotes.md-def-footnote {
+        background: #f7f8fa !important;
+        border: 1px solid #d8dde6 !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    #write table thead {
+        background: #eef2f7 !important;
+    }
+
+    #write table thead th {
+        color: #1a1a1a !important;
+    }
+
+    #write table tbody tr,
+    #write table tbody tr:nth-child(even) {
+        background: transparent !important;
+        border-bottom: 1px solid #d8dde6 !important;
+    }
+
+    #write blockquote {
+        background: #f7f7fa !important;
+    }
+
+    #write sup.md-footnote,
+    #write sup.md-footnote a {
+        background: #e5e7eb !important;
+        color: #1a1a1a !important;
+        box-shadow: none !important;
+    }
+
+    #write .md-hr hr,
+    #write hr {
+        box-shadow: none !important;
+    }
 }
